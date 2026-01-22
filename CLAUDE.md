@@ -1,60 +1,29 @@
-# Crosscheck Skill Project
+# CrossCheck
 
-## Overview
+Multi-model cross-verification skill for Claude Code using Claude, Codex, and Gemini.
 
-This project provides the `/crosscheck` skill for Claude Code, enabling multi-model cross-verification using Claude, Codex, and Gemini.
+## Skill: /crosscheck
 
-## Requirements
-
-- Claude Code CLI
-- Codex MCP server configured
-- Gemini MCP server configured
-
-## Custom Skills
-
-### /crosscheck
-
-Cross-check answers through a 3-round verification process:
-
-1. **Round 1**: Get independent answers from Claude, Codex (bypass mode), and Gemini (yolo mode)
-2. **Round 2**: Each model reviews the other two's answers
-3. **Round 3**: Synthesize final conclusion with corrections
+3-round verification process:
+1. **Round 1**: Independent answers from Claude, Codex, Gemini (parallel)
+2. **Round 2**: Each model reviews the other two
+3. **Round 3**: Synthesize final conclusion
 
 **Usage**: `/crosscheck <question>`
 
-**Example**:
-```
-/crosscheck In the era of large models, do we still need vertical models?
-```
+## MCP Tool Calls
 
-## MCP Configurations
-
-### Codex (Bypass Mode)
 ```javascript
-mcp__codex__codex({
-  prompt: "...",
-  "approval-policy": "never",
-  sandbox: "danger-full-access"
-})
+// Codex (bypass mode)
+mcp__codex__codex({ prompt: "...", "approval-policy": "never", sandbox: "danger-full-access" })
+
+// Gemini (yolo mode)
+mcp__gemini__gemini({ prompt: "...", yolo: true })
 ```
 
-### Gemini (Yolo Mode)
-```javascript
-mcp__gemini__gemini({
-  prompt: "...",
-  yolo: true
-})
-```
-
-## Directory Structure
+## Structure
 
 ```
-crosscheck-skill/
-├── CLAUDE.md                    # Project instructions
-├── README.md                    # Project documentation
-├── .claude/
-│   └── skills/
-│       └── crosscheck/
-│           └── SKILL.md         # Skill definition
-└── logs/                        # Verification logs
+.claude/skills/crosscheck/SKILL.md  # Skill definition
+logs/                               # Verification logs
 ```

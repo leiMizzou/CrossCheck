@@ -23,8 +23,8 @@
 // Codex (bypass mode)
 mcp__codex__codex({ prompt: "...", "approval-policy": "never", sandbox: "danger-full-access" })
 
-// Gemini (yolo mode)
-mcp__gemini__gemini({ prompt: "...", yolo: true })
+// Gemini
+mcp__gemini__ask-gemini({ prompt: "..." })
 ```
 
 ## Structure

@@ -25,11 +25,10 @@ Simultaneously query three models with the same question:
      sandbox: "danger-full-access"
    })
    ```
-3. **Gemini MCP**: Call with yolo mode
+3. **Gemini MCP**: Call with ask-gemini
    ```javascript
-   mcp__gemini__gemini({
-     prompt: "<question>\n\nPlease analyze from technical and business perspectives, provide your view with specific examples.",
-     yolo: true
+   mcp__gemini__ask-gemini({
+     prompt: "<question>\n\nPlease analyze from technical and business perspectives, provide your view with specific examples."
    })
    ```
 
@@ -68,7 +67,7 @@ Please provide your detailed review.`,
 
 2. **Gemini reviews Claude + Codex**:
    ```javascript
-   mcp__gemini__gemini({
+   mcp__gemini__ask-gemini({
      prompt: `You are a strict reviewer. Below are two answers about "<question>".
 
 Please review and identify:
@@ -85,8 +84,7 @@ Please review and identify:
 <codex_answer>
 ---
 
-Please provide your detailed review.`,
-     yolo: true
+Please provide your detailed review.`
    })
    ```
 

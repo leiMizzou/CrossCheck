@@ -20,6 +20,8 @@ A Claude Code skill that queries Claude, Codex, and Gemini simultaneously, then 
 git clone https://github.com/leiMizzou/CrossCheck.git && cd CrossCheck && ./install.sh
 ```
 
+> **Tip**: Use `./install.sh --force` to reinstall/update CLIs if you have older versions.
+
 Then login and restart:
 ```bash
 codex        # Login to OpenAI (first time only)
@@ -59,7 +61,7 @@ gemini       # Login to Google (first time only)
 |---------|-------------|
 | **Smart Short-Circuit** | Skip Round 2/3 when all models agree (saves time & cost) |
 | **Fault Tolerance** | Continues with 2 models if one fails (degraded mode) |
-| **Structured Output** | Clear tables with model status and confidence |
+| **Structured Output** | Clear tables with model status and verification mode |
 | **Auto Logging** | Saves results to `logs/` for audit trail |
 
 ## Usage

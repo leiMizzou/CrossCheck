@@ -15,31 +15,49 @@ CODEX_VERSION="0.1"
 GEMINI_CLI_VERSION="0.1"
 GEMINI_MCP_VERSION="0.1.8"
 
+# Parse arguments
+FORCE_INSTALL=false
+if [[ "$1" == "--force" || "$1" == "-f" ]]; then
+    FORCE_INSTALL=true
+    echo -e "${YELLOW}Force mode: Will reinstall CLIs even if already present${NC}"
+    echo ""
+fi
+
 # Check Node.js
 if ! command -v node &> /dev/null; then
     echo -e "${RED}Error: Node.js is required. Install from https://nodejs.org${NC}"
     exit 1
 fi
+echo -e "${GREEN}✓ Node.js${NC} $(node --version)"
 
-echo "Node.js version: $(node --version)"
+# Check Claude Code CLI
+if ! command -v claude &> /dev/null; then
+    echo -e "${RED}Error: Claude Code CLI is required.${NC}"
+    echo "  Install with: npm install -g @anthropic-ai/claude-code"
+    echo "  Or visit: https://claude.ai/code"
+    exit 1
+fi
+echo -e "${GREEN}✓ Claude Code CLI found${NC}"
 echo ""
 
 # Install Codex CLI
 echo "Installing Codex CLI (@openai/codex@${CODEX_VERSION})..."
-if ! command -v codex &> /dev/null; then
+if ! command -v codex &> /dev/null || [ "$FORCE_INSTALL" = true ]; then
     npm install -g @openai/codex@${CODEX_VERSION}
     echo -e "${GREEN}✓ Codex CLI installed${NC}"
 else
     echo -e "${GREEN}✓ Codex CLI already installed${NC} ($(codex --version 2>/dev/null || echo 'unknown'))"
+    echo -e "  ${YELLOW}Use --force to reinstall${NC}"
 fi
 
 # Install Gemini CLI
 echo "Installing Gemini CLI (@google/gemini-cli@${GEMINI_CLI_VERSION})..."
-if ! command -v gemini &> /dev/null; then
+if ! command -v gemini &> /dev/null || [ "$FORCE_INSTALL" = true ]; then
     npm install -g @google/gemini-cli@${GEMINI_CLI_VERSION}
     echo -e "${GREEN}✓ Gemini CLI installed${NC}"
 else
     echo -e "${GREEN}✓ Gemini CLI already installed${NC}"
+    echo -e "  ${YELLOW}Use --force to reinstall${NC}"
 fi
 
 # Add MCP servers to Claude Code

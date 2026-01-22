@@ -37,6 +37,11 @@ gemini       # Login to Google (first time only)
 │ Round 1: Independent       │
 │ Claude + Codex + Gemini    │  ← 3 models answer independently
 └──────────────┬─────────────┘
+               │
+       ┌───────┴───────┐
+       │ High Consensus?│  ← Smart Short-Circuit
+       └───────┬───────┘
+          No   │   Yes → Fast Consensus Mode (skip R2/R3)
                ▼
 ┌────────────────────────────┐
 │ Round 2: Cross Review      │  ← Each critiques the other two
@@ -47,6 +52,15 @@ gemini       # Login to Google (first time only)
 │ Round 3: Final Conclusion  │  ← Synthesize consensus + corrections
 └────────────────────────────┘
 ```
+
+## Key Features
+
+| Feature | Description |
+|---------|-------------|
+| **Smart Short-Circuit** | Skip Round 2/3 when all models agree (saves time & cost) |
+| **Fault Tolerance** | Continues with 2 models if one fails (degraded mode) |
+| **Structured Output** | Clear tables with model status and confidence |
+| **Auto Logging** | Saves results to `logs/` for audit trail |
 
 ## Usage
 
@@ -59,24 +73,26 @@ gemini       # Login to Google (first time only)
 ## Output Example
 
 ```markdown
-## Cross-Check Results
+## Cross-Check Results: Do we still need vertical models?
+
+**Mode**: Full Verification
 
 ### Round 1: Independent Answers
-| Model  | Core View | Key Points |
-|--------|-----------|------------|
-| Claude | Yes, for regulated industries | Data privacy, compliance |
-| Codex  | Depends on scale | Cost vs accuracy tradeoff |
-| Gemini | Hybrid approach | Combine general + specialized |
+| Model  | Status | Core View | Key Points |
+|--------|--------|-----------|------------|
+| Claude | OK | Yes, for regulated industries | Data privacy, compliance |
+| Codex  | OK | Depends on scale | Cost vs accuracy tradeoff |
+| Gemini | OK | Hybrid approach | Combine general + specialized |
 
 ### Round 2: Cross Review
 - Codex found Claude overstated compliance requirements
-- Gemini caught Codex's cost estimates were outdated
+- Gemini caught outdated cost assumptions in Codex's answer
 - Claude identified missing edge cases in both
 
 ### Round 3: Final Conclusion
-✓ Consensus: Vertical models valuable for healthcare, finance
-✓ Correction: Training costs dropped 60% since 2024
-✓ Final: Hybrid approach recommended for most use cases
+| Consensus | All agree vertical models valuable for healthcare, finance |
+| Corrections | Updated cost analysis based on reviews |
+| Final | Hybrid approach recommended for most use cases |
 ```
 
 ## Manual Install
@@ -85,12 +101,12 @@ gemini       # Login to Google (first time only)
 <summary>Click to expand</summary>
 
 ```bash
-# 1. Install CLIs
-npm install -g @openai/codex @google/gemini-cli
+# 1. Install CLIs (with version pinning)
+npm install -g @openai/codex@0.1 @google/gemini-cli@0.1
 
 # 2. Add MCP servers
 claude mcp add codex -- codex mcp-server
-claude mcp add gemini -- npx -y gemini-mcp-tool
+claude mcp add gemini -- npx -y gemini-mcp-tool@0.1.8
 
 # 3. Copy skill
 mkdir -p .claude/skills/crosscheck
@@ -100,6 +116,8 @@ curl -sL https://raw.githubusercontent.com/leiMizzou/CrossCheck/main/.claude/ski
 # 4. Login & restart
 codex && gemini && echo "Now run /exit to restart Claude Code"
 ```
+
+**Note**: Requires Node.js and Claude Code CLI installed.
 
 </details>
 

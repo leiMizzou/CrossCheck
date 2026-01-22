@@ -60,7 +60,14 @@ Only proceed to Round 2 when:
 
 Each model reviews the other two models' answers. Execute these two calls in parallel:
 
-1. **Codex reviews Claude + Gemini**:
+**IMPORTANT - Degraded Mode Adjustments**:
+If a model was unavailable in Round 1, dynamically adjust Round 2:
+- If **Codex** unavailable: Skip "Codex reviews" step; Gemini reviews only Claude's answer
+- If **Gemini** unavailable: Skip "Gemini reviews" step; Codex reviews only Claude's answer
+- Adjust the prompt to say "Below is one answer..." instead of "two answers" when applicable
+- Only include available answers in the review prompt
+
+1. **Codex reviews Claude + Gemini** (skip if Codex unavailable):
    ```javascript
    mcp__codex__codex({
      prompt: `You are a strict reviewer. Below are two answers about "<question>".
@@ -85,7 +92,7 @@ Please provide your detailed review.`,
    })
    ```
 
-2. **Gemini reviews Claude + Codex**:
+2. **Gemini reviews Claude + Codex** (skip if Gemini unavailable):
    ```javascript
    mcp__gemini__ask-gemini({
      prompt: `You are a strict reviewer. Below are two answers about "<question>".
@@ -143,19 +150,24 @@ Display results in this structure:
 
 ### Round 2: Cross Review
 
+<!-- In degraded mode, only show reviews from available models -->
+
 #### Codex's Review of Claude + Gemini
+<!-- Skip this section if Codex unavailable -->
 - **Agrees**: ...
 - **Disagrees**: ...
 - **Missing**: ...
 - **Errors**: ...
 
 #### Gemini's Review of Claude + Codex
+<!-- Skip this section if Gemini unavailable -->
 - **Agrees**: ...
 - **Disagrees**: ...
 - **Missing**: ...
 - **Errors**: ...
 
 #### Claude's Review of Codex + Gemini
+<!-- Always present; adjust title based on available models -->
 - **Agrees**: ...
 - **Disagrees**: ...
 - **Missing**: ...

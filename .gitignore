@@ -1,0 +1,10 @@
+# Logs
+logs/*.md
+
+# OS files
+.DS_Store
+
+# Editor
+*.swp
+*.swo
+*~

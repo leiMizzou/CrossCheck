@@ -2,6 +2,8 @@
 
 **Reduce AI hallucinations through multi-model consensus.**
 
+English | [中文](README.zh-CN.md)
+
 A Claude Code skill that queries Claude, Codex, and Gemini simultaneously, then has each model critique the others' answers to produce more reliable conclusions.
 
 ## Why CrossCheck?

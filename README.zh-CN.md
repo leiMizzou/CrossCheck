@@ -4,6 +4,8 @@
 
 [English](README.md) | 中文
 
+> **[CC Suite](https://github.com/leiMizzou/CC-Suite) 成员** - Claude Code 工作流标准库
+
 一个 Claude Code 技能，同时查询 Claude、Codex 和 Gemini，然后让每个模型互相审查对方的答案，以产生更可靠的结论。
 
 ## 为什么选择 CrossCheck？

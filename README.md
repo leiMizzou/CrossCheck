@@ -4,6 +4,8 @@
 
 English | [中文](README.zh-CN.md)
 
+> **Part of [CC Suite](https://github.com/leiMizzou/CC-Suite)** - The Standard Library for Claude Code Workflows
+
 A Claude Code skill that queries Claude, Codex, and Gemini simultaneously, then has each model critique the others' answers to produce more reliable conclusions.
 
 ## Why CrossCheck?

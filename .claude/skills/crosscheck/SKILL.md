@@ -34,7 +34,27 @@ Simultaneously query three models with the same question:
 
 **IMPORTANT**: Call Codex and Gemini in parallel (single message with both tool calls).
 
-Collect all three answers before proceeding to Round 2.
+**Error Handling**: If a model fails to respond (timeout, error, or unavailable):
+- Mark that model as "[UNAVAILABLE]" in the results
+- Continue with remaining models (minimum 2 models required)
+- Note the degraded mode in the final output
+- If only 1 model available, abort and inform the user
+
+Collect all available answers before proceeding to Round 2.
+
+### Smart Short-Circuit (Optional Optimization)
+
+After Round 1, evaluate if all models substantially agree:
+- If all three answers convey the same core conclusion with no contradictions
+- And the question is factual (not opinion-based)
+- Then skip Round 2 and Round 3, directly output the consensus answer
+
+Mark the output as "**Mode: Fast Consensus**" when short-circuiting.
+
+Only proceed to Round 2 when:
+- Models disagree on key points
+- The question is complex/subjective
+- Any model expresses uncertainty
 
 ### Round 2: Cross Review
 
@@ -90,6 +110,11 @@ Please provide your detailed review.`
 
 3. **Claude reviews Codex + Gemini**: Claude (main model) also reviews the other two answers.
 
+**Error Handling for Round 2**:
+- If a reviewer model fails, skip that review and continue
+- Claude's review is always performed (as main model)
+- Note any missing reviews in the output
+
 ### Round 3: Synthesize Conclusion
 
 Based on all reviews, produce:
@@ -106,13 +131,15 @@ Display results in this structure:
 ```markdown
 ## Cross-Check Results: <question>
 
+**Mode**: Full Verification | Fast Consensus | Degraded (N models)
+
 ### Round 1: Independent Answers
 
-| Model | Core View | Key Points |
-|-------|-----------|------------|
-| Claude | ... | ... |
-| Codex | ... | ... |
-| Gemini | ... | ... |
+| Model | Status | Core View | Key Points |
+|-------|--------|-----------|------------|
+| Claude | OK | ... | ... |
+| Codex | OK/UNAVAILABLE | ... | ... |
+| Gemini | OK/UNAVAILABLE | ... | ... |
 
 ### Round 2: Cross Review
 

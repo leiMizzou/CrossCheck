@@ -13,7 +13,7 @@ NC='\033[0m'
 # Version pinning (update these as needed)
 CODEX_VERSION="0.1"
 GEMINI_CLI_VERSION="0.1"
-GEMINI_MCP_VERSION="0.1.8"
+GEMINI_MCP_VERSION="1.1.4"
 
 # Parse arguments
 FORCE_INSTALL=false
